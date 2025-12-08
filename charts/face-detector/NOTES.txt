@@ -1,0 +1,13 @@
+Thank you for installing {{ .Chart.Name }}!
+
+To verify the deployment, run these commands:
+
+  kubectl get deployments
+  kubectl get pods -l app={{ include "face-detector.fullname" . }}
+  kubectl get svc -l app={{ include "face-detector.fullname" . }}
+
+If you enabled ingress, check the host(s) configured in `values.yaml` or set via `--set`.
+
+To upgrade the release with a new image tag:
+
+  helm upgrade {{ .Release.Name }} ./charts/face-detector --set image.tag=NEW_TAG
