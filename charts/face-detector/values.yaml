@@ -33,6 +33,9 @@ ingress:
           service: backend
   tls: []
 
+cors:
+  allowedOrigins: "http://face-detector.local"
+
 resources: {}
 
 nodeSelector: {}

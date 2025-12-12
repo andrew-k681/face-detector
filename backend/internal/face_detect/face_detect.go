@@ -5,20 +5,22 @@ import (
 	"errors"
 	"image"
 	"image/color"
+	"path/filepath"
+	"runtime"
 
 	"gocv.io/x/gocv"
 )
 
-const ClassifierPath = "./internal/classifiers/haarcascade_frontalface_default.xml"
+func getClassifierPath() string {
+	_, filename, _, _ := runtime.Caller(0)
+	dir := filepath.Dir(filename)
+	return filepath.Join(dir, "..", "classifiers", "haarcascade_frontalface_default.xml")
+}
 
 func DetectFaces(imageData []byte) (image.Image, int, error) {
 	// Convert to image.Image
 	img, _, err := image.Decode(bytes.NewReader(imageData))
 	if err != nil {
-		// c.JSON(http.StatusBadRequest, dto.FaceDetectionResponse{
-		// 	Success: false,
-		// 	Message: "Failed to decode image format: " + err.Error(),
-		// })
 		return nil, 0, err
 	}
 
@@ -33,7 +35,7 @@ func DetectFaces(imageData []byte) (image.Image, int, error) {
 	classifier := gocv.NewCascadeClassifier()
 	defer classifier.Close()
 
-	if !classifier.Load(ClassifierPath) {
+	if !classifier.Load(getClassifierPath()) {
 		return nil, 0, errors.New("failed to load face classifier")
 	}
 

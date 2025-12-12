@@ -136,6 +136,7 @@ make logs                         # View logs
 make restart                      # Restart containers
 make clean                        # Remove all containers/images
 make rebuild                      # Rebuild and restart
+make test                         # Run Go tests
 ```
 
 ### Local Development

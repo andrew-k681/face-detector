@@ -1,4 +1,4 @@
-.PHONY: build up down logs clean help
+.PHONY: build up down logs clean help test
 
 help: ## Show this help message
 	@echo 'Usage: make [target]'
@@ -27,3 +27,5 @@ clean: ## Remove containers and images
 rebuild: ## Rebuild and restart the application
 	docker-compose up -d --build
 
+test: ## Run Go tests
+	cd backend && go test ./... -v

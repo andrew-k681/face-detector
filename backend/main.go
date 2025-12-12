@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os"
+	"strings"
 
 	"face-detection-app/internal/api/handlers"
 
@@ -22,7 +23,13 @@ func main() {
 
 	// CORS middleware
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"*"}
+	allowedOrigins := os.Getenv("ALLOWED_ORIGINS")
+	if allowedOrigins == "" {
+		// Default to localhost for development
+		config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:80", "http://127.0.0.1:3000", "http://127.0.0.1:80"}
+	} else {
+		config.AllowOrigins = strings.Split(allowedOrigins, ",")
+	}
 	config.AllowMethods = []string{"GET", "POST", "OPTIONS"}
 	config.AllowHeaders = []string{"Content-Type"}
 	router.Use(cors.New(config))

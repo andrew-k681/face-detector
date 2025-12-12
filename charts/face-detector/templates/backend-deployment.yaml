@@ -23,6 +23,8 @@ spec:
           env:
             - name: PORT
               value: "{{ .Values.backend.service.containerPort }}"
+            - name: ALLOWED_ORIGINS
+              value: "{{ .Values.cors.allowedOrigins }}"
           livenessProbe:
             httpGet:
               path: /api/health

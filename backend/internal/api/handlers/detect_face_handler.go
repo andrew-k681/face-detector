@@ -22,6 +22,16 @@ func DetectFaceHandler(c *gin.Context) {
 		return
 	}
 
+	// Validate image data size (limit to 20MB base64 to prevent DoS)
+	const maxBase64Size = 20 * 1024 * 1024 // 20MB
+	if len(request.ImageData) > maxBase64Size {
+		c.JSON(http.StatusBadRequest, dto.FaceDetectionResponse{
+			Success: false,
+			Message: "Image data too large. Maximum size is 20MB.",
+		})
+		return
+	}
+
 	// Decode base64 image
 	imageData, err := base64.StdEncoding.DecodeString(request.ImageData)
 	if err != nil {
