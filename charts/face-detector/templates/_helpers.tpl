@@ -4,10 +4,5 @@
 {{- end -}}
 
 {{- define "face-detector.fullname" -}}
-{{- $name := printf "%s-%s" .Release.Name (include "face-detector.name" .) -}}
-{{- if lt (len $name) 64 -}}
-{{- $name -}}
-{{- else -}}
-{{- trunc 63 $name | trimSuffix "-" -}}
-{{- end -}}
+{{- .Release.Name -}}
 {{- end -}}

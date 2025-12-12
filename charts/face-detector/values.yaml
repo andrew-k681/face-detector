@@ -1,21 +1,36 @@
-replicaCount: 1
+backend:
+  replicaCount: 1
+  image:
+    repository: face-detector-backend
+    tag: "latest"
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 80
+    containerPort: 8080
 
-image:
-  repository: your-registry/face-detector-backend
-  tag: "latest"
-  pullPolicy: IfNotPresent
-
-service:
-  type: ClusterIP
-  port: 80
-  containerPort: 8080
+frontend:
+  replicaCount: 1
+  image:
+    repository: face-detector-frontend
+    tag: "latest"
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 80
+    containerPort: 80
 
 ingress:
   enabled: false
   hosts:
-    - host: chart-example.local
+    - host: face-detector.local
       paths:
-        - /
+        - path: /
+          pathType: Prefix
+          service: frontend
+        - path: /api
+          pathType: Prefix
+          service: backend
   tls: []
 
 resources: {}

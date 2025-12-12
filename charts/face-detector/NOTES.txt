@@ -3,11 +3,11 @@ Thank you for installing {{ .Chart.Name }}!
 To verify the deployment, run these commands:
 
   kubectl get deployments
-  kubectl get pods -l app={{ include "face-detector.fullname" . }}
-  kubectl get svc -l app={{ include "face-detector.fullname" . }}
+  kubectl get pods -l app.kubernetes.io/name={{ include "face-detector.name" . }}
+  kubectl get svc -l app.kubernetes.io/name={{ include "face-detector.name" . }}
 
 If you enabled ingress, check the host(s) configured in `values.yaml` or set via `--set`.
 
 To upgrade the release with a new image tag:
 
-  helm upgrade {{ .Release.Name }} ./charts/face-detector --set image.tag=NEW_TAG
+  helm upgrade {{ .Release.Name }} ./charts/face-detector --set backend.image.tag=NEW_TAG --set frontend.image.tag=NEW_TAG

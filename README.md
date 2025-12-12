@@ -36,6 +36,41 @@ Then visit:
 
 See [INSTALLATION.md](INSTALLATION.md) for detailed local setup instructions.
 
+### Option 3: Kubernetes (Docker Desktop)
+
+1. **Enable Kubernetes in Docker Desktop**:
+   - Open Docker Desktop
+   - Go to Settings > Kubernetes
+   - Check "Enable Kubernetes"
+   - Click "Apply & Restart"
+
+2. **Build images**:
+   ```bash
+   # Build backend image
+   cd backend
+   docker build -t face-detector-backend:latest .
+   
+   # Build frontend image
+   cd ../frontend
+   docker build -t face-detector-frontend:latest .
+   ```
+
+3. **Deploy using Helm**:
+   ```bash
+   cd ../charts/face-detector
+   
+   # Install the chart
+   helm install face-detector .
+   ```
+
+4. **Access the application**:
+   - **Port-forwarding**: `kubectl port-forward svc/face-detector-frontend 3000:80` then visit `http://localhost:3000`
+
+5. **Cleanup**:
+   ```bash
+   helm uninstall face-detector
+   ```
+
 ## Documentation
 
 - [INSTALLATION.md](INSTALLATION.md) - Detailed setup and installation guide

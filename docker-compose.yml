@@ -9,6 +9,8 @@ services:
       - "3000:80"   # Map container's port 80 (Nginx) to host port 3000
     depends_on:
       - backend
+    environment:
+      - BACKEND_HOST=backend:8080
     networks:
       - face-detector-network
     healthcheck:

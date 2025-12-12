@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "face-detector.fullname" . }}-frontend
+  labels:
+    app: {{ include "face-detector.fullname" . }}-frontend
+spec:
+  replicas: {{ .Values.frontend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "face-detector.fullname" . }}-frontend
+  template:
+    metadata:
+      labels:
+        app: {{ include "face-detector.fullname" . }}-frontend
+    spec:
+      containers:
+        - name: face-detector-frontend
+          image: "{{ .Values.frontend.image.repository }}:{{ .Values.frontend.image.tag }}"
+          imagePullPolicy: {{ .Values.frontend.image.pullPolicy | quote }}
+          ports:
+            - containerPort: {{ .Values.frontend.service.containerPort }}
+          env:
+            - name: BACKEND_HOST
+              value: "face-detector-backend:80"
+{{- with .Values.resources }}
+          resources:
+{{- toYaml . | nindent 12 }}
+{{- end }}

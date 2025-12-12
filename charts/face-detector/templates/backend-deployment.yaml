@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "face-detector.fullname" . }}-backend
+  labels:
+    app: {{ include "face-detector.fullname" . }}-backend
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "face-detector.fullname" . }}-backend
+  template:
+    metadata:
+      labels:
+        app: {{ include "face-detector.fullname" . }}-backend
+    spec:
+      containers:
+        - name: face-detector-backend
+          image: "{{ .Values.backend.image.repository }}:{{ .Values.backend.image.tag }}"
+          imagePullPolicy: {{ .Values.backend.image.pullPolicy | quote }}
+          ports:
+            - containerPort: {{ .Values.backend.service.containerPort }}
+          env:
+            - name: PORT
+              value: "{{ .Values.backend.service.containerPort }}"
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.backend.service.containerPort }}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: {{ .Values.backend.service.containerPort }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
+{{- with .Values.resources }}
+          resources:
+{{- toYaml . | nindent 12 }}
+{{- end }}

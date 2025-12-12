@@ -3,22 +3,21 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "face-detector.fullname" . }}
-  annotations:
-    kubernetes.io/ingress.class: nginx
 spec:
+  ingressClassName: nginx
   rules:
 {{- range .Values.ingress.hosts }}
     - host: {{ .host }}
       http:
         paths:
 {{- range .paths }}
-          - path: {{ . }}
-            pathType: Prefix
+          - path: {{ .path }}
+            pathType: {{ .pathType }}
             backend:
               service:
-                name: {{ include "face-detector.fullname" $ }}
+                name: {{ include "face-detector.fullname" $ }}-{{ .service }}
                 port:
-                  number: {{ $.Values.service.port }}
+                  number: {{ if eq .service "backend" }}{{ $.Values.backend.service.port }}{{ else }}{{ $.Values.frontend.service.port }}{{ end }}
 {{- end }}
 {{- end }}
   {{- if .Values.ingress.tls }}

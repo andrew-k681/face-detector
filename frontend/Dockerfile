@@ -21,7 +21,7 @@ RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/build /usr/share/nginx/html
 
 # Copy custom Nginx config for proxy setup
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx.conf /etc/nginx/templates/default.conf.template
 
 # Expose port 80
 EXPOSE 80
