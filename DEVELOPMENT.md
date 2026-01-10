@@ -168,28 +168,6 @@ npm start
 docker-compose up -d --build
 ```
 
-### Making Code Changes
-
-#### Backend Changes
-
-1. Edit files in `backend/`
-2. Backend will auto-reload if using air watch (optional)
-3. Or manually restart: `docker-compose restart backend`
-
-```bash
-# Install air for auto-reload (optional)
-go install github.com/cosmtrek/air@latest
-
-# Run with air (from backend directory)
-air
-```
-
-#### Frontend Changes
-
-1. Edit files in `frontend/src/`
-2. Changes auto-refresh in browser (hot reload enabled)
-3. Check browser console for errors
-
 ### Git Workflow
 
 ```bash
